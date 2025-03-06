@@ -20,12 +20,24 @@ cursor = conn.cursor()
 
 @app.route('/', methods=['GET'])
 def get_contacts():
-    res = cursor.execute("SELECT * FROM contacts")
-    return flask.jsonify({"test": str(res)})
+    cursor.execute("SELECT * FROM contacts")
+    rows = cursor.fetchall()  # Fetch all rows from the query result
+
+    return flask.jsonify({"contacts": rows})
 
 @app.route('/', methods=['POST'])
 def get_contact():
-    return flask.jsonify({"test": "post"})
+    data = flask.request.get_json()
+
+    if not data:
+        return flask.jsonify({"error": "No input data provided"}), 400
+    name = data.get("name")
+    phone_number = data.get("phone_number")
+    email = data.get("email")
+    query = "INSERT INTO contacts (name, phone_number, email) VALUES (%s, %s, %s)"
+    res = cursor.execute(query, (name, phone_number, email))
+    conn.commit()
+    return flask.jsonify({"test": str(res)})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
