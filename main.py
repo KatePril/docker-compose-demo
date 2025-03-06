@@ -8,8 +8,8 @@ POSTGRES_USER = os.getenv("POSTGRES_USER")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 POSTGRES_DB = os.getenv("POSTGRES_DB")
 
-POSTGRES_HOST = "localhost"
-POSTGRES_PORT = "5433"
+POSTGRES_HOST = "postgres"
+POSTGRES_PORT = "5432"
 app = flask.Flask(__name__)
 conn = psycopg2.connect(database=POSTGRES_DB,
                         user=POSTGRES_USER,
