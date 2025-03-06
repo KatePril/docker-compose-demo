@@ -3,6 +3,8 @@ from psycopg2 import connect
 from flask import Flask, request, jsonify
 import os
 
+from insert import insert_data
+
 load_dotenv()
 POSTGRES_USER = os.getenv("POSTGRES_USER")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
@@ -27,21 +29,7 @@ def get_contacts():
 @app.route('/', methods=['POST'])
 def get_contact():
     data = request.get_json()
-
-    if not data:
-        return jsonify({"error": "No input data provided"}), 400
-    name = data.get("name")
-    if not name:
-        return jsonify({"error": "name is a mandatory parameter"}), 400
-
-    phone_number = data.get("phone_number")
-    email = data.get("email")
-
-    query = "INSERT INTO contacts (name, phone_number, email) VALUES (%s, %s, %s)"
-    res = cursor.execute(query, (name, phone_number, email))
-    conn.commit()
-
-    return jsonify({"test": str(res)})
+    return insert_data(data, cursor, conn)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
