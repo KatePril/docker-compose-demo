@@ -13,5 +13,5 @@ docker-compose up --build
 
 Select data from database:
 ```sh
-docker exec -it postgres_db psql -U postgres -d test_db -c "SELECT * FROM contacts"
+docker exec -it postgres_db psql -U postgres -d contacts_db -c "SELECT * FROM contacts"
 ```
